@@ -46,10 +46,10 @@ public:
 };
 ```
 
-### Attribute of Type T & Member Function Using T
+### Attribute of Type T & `Member Function` Using T
 
 ```cpp
-    // Attribute of Type T & Member Function Using T
+    // StrayCat.hpp
     void describeTrait() const {
         std::cout << "Trait info: " << trait << std::endl;
     }
