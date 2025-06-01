@@ -10,6 +10,24 @@ This C++ project is an interactive cat-feeding simulation that demonstrates adva
 
 ## Template Requirements 
 
+## Modified Template Class and Member Function 
+
+```cpp
+// In StrayCat.hpp
+
+template<typename T>
+class StrayCat : public Cat {
+private:
+    T trait; // Template attribute 
+
+public:
+    void describeTrait() const {
+        std::cout << "Trait info: " << trait << std::endl;
+    }
+};
+```
+* Located in `StrayCat.hpp`.
+  
 ### Function Template
 
 ```cpp
@@ -20,7 +38,7 @@ void displayInfo(const T& item);
 * Located in `GameUtils.hpp`.
 * Used to show food treatment and eating animation for any food type.
 
-### Class Template / T Usage
+### Class Template Function Usage
 
 ```cpp
 template<typename CatType>
@@ -30,6 +48,12 @@ void addGenericCat(GameState& game, const std::string& name, int age, int fullne
 * This template function allows flexible addition of any `Cat` subtype.
 
 * The `T` type is also indirectly involved in the smart pointer instantiation, fulfilling the requirement for using `T` in a parameter and inside a method.
+
+Example instantiation:
+
+```cpp
+addGenericCat<StrayCat<std::string>>(game, "Ghost", 2, 40);
+```
 
 ---
 
