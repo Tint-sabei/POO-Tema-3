@@ -60,6 +60,8 @@ class FatCatFeeding : public FeedingStrategy { ... };
 
 ```cpp
 static std::shared_ptr<Food> createFish();
+static std::shared_ptr<Food> createDryFood();
+static std::shared_ptr<Food> createMilk();
 ```
 
 * Static methods in `Food` create different types of food.
