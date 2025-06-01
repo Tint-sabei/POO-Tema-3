@@ -8,51 +8,72 @@ This C++ project is an interactive cat-feeding simulation that demonstrates adva
 
 ---
 
-## Template Requirements 
+## Template Requirements
 
-## Modified Template Class and Member Function 
+### Function Template: `displayInfo<T>`
 
 ```cpp
-// In StrayCat.hpp
+// GameUtils.hpp
+template<typename T>
+void displayInfo(const T& item) {
+    item.treat();
+    item.eat();
+}
+```
 
+* Used to display food treatment and animation for any object having `treat()` and `eat()` methods.
+
+### Free Function Template: `addGenericCat<T>`
+
+```cpp
+// GameUtils.hpp
+template<typename CatType>
+void addGenericCat(GameState& game, const std::string& name, int age, int fullness) {
+    game.addCat(std::make_shared<CatType>(name, age, fullness));
+}
+```
+
+* Allows flexible addition of any `Cat` subtype to the game using smart pointers.
+
+### Class Template: `StrayCat<T>`
+
+```cpp
+// StrayCat.hpp
 template<typename T>
 class StrayCat : public Cat {
 private:
-    T trait; // Template attribute 
+    T trait; // Attribute of type T
 
 public:
+    StrayCat() : Cat(), trait() {}
+    StrayCat(std::string name, int age, int fullnessLevel)
+        : Cat(name, age, fullnessLevel), trait() {}
+
+    StrayCat(const StrayCat<T>& other) : Cat(other), trait(other.trait) {}
+    StrayCat<T>& operator=(const StrayCat<T>& other) {
+        if (this == &other) return *this;
+        Cat::operator=(other);
+        trait = other.trait;
+        return *this;
+    }
+
+    std::shared_ptr<Cat> clone() const override {
+        return std::make_shared<StrayCat<T>>(*this);
+    }
+
+    std::string getType() const override {
+        return "Stray Cat";
+    }
+
+    void sound() const override {
+        std::cout << "\nStray Cat Sound: HISSS!\n";
+    }
+
+    // Attribute of Type T & Member Function Using T
     void describeTrait() const {
         std::cout << "Trait info: " << trait << std::endl;
     }
 };
-```
-* Located in `StrayCat.hpp`.
-  
-### Function Template
-
-```cpp
-template<typename T>
-void displayInfo(const T& item);
-```
-
-* Located in `GameUtils.hpp`.
-* Used to show food treatment and eating animation for any food type.
-
-### Class Template Function Usage
-
-```cpp
-template<typename CatType>
-void addGenericCat(GameState& game, const std::string& name, int age, int fullness);
-```
-
-* This template function allows flexible addition of any `Cat` subtype.
-
-* The `T` type is also indirectly involved in the smart pointer instantiation, fulfilling the requirement for using `T` in a parameter and inside a method.
-
-Example instantiation:
-
-```cpp
-addGenericCat<StrayCat<std::string>>(game, "Ghost", 2, 40);
 ```
 
 ---
@@ -66,8 +87,11 @@ static GameState& getInstance();
 ```
 
 * A private constructor prevents multiple instances.
-* Ensures centralized game management.
-* *Chosen because*: It guarantees consistent game logic and shared access to all cat data.
+* * Ensures a single game manager handles all game state.
+* **Why I used it**: My game logic depends on a shared list of cats and feeding actions. I needed a centralized, consistent controller to manage all interactions and data updates without conflict.
+
+
+
 
 ### Strategy Pattern – Feeding Behavior
 
@@ -78,8 +102,8 @@ class FatCatFeeding : public FeedingStrategy { ... };
 ```
 
 * Applied when feeding cats: different behavior for `FatCat` and others.
-* *Chosen because*: It separates feeding logic from cat classes and makes it easy to extend behavior for new cat types in the future.
-
+* **Why I used it**: Rather than hardcoding feeding behavior with conditions, I designed separate strategy classes that encapsulate each cat’s feeding logic. It makes the system easy to extend with new feeding rules.
+* 
 ### Factory Method Pattern – Food Creation
 
 ```cpp
@@ -89,8 +113,7 @@ static std::shared_ptr<Food> createMilk();
 ```
 
 * Static methods in `Food` create different types of food.
-* *Chosen because*: It encapsulates object creation and lets the game logic focus on "what to create" without knowing "how."
-
+* **Why I used it**: It allowed me to avoid `new` and to encapsulate food object creation logic in one place. Using smart pointers ensures there's no memory leak.
 ---
 
 ## Example Run
