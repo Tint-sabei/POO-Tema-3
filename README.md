@@ -10,30 +10,6 @@ This C++ project is an interactive cat-feeding simulation that demonstrates adva
 
 ## Template Requirements
 
-### Function Template: `displayInfo<T>`
-
-```cpp
-// GameUtils.hpp
-template<typename T>
-void displayInfo(const T& item) {
-    item.treat();
-    item.eat();
-}
-```
-* Used to display food treatment for any object having `treat()` and `eat()` methods.
-
-### Free Function Template: `addGenericCat<T>`
-
-```cpp
-// GameUtils.hpp
-template<typename CatType>
-void addGenericCat(GameState& game, const std::string& name, int age, int fullness) {
-    game.addCat(std::make_shared<CatType>(name, age, fullness));
-}
-```
-
-* Allows flexible addition of any `Cat` subtype to the game using smart pointers.
-
 ### Class Template: `StrayCat<T>`
 
 ```cpp
@@ -67,14 +43,41 @@ public:
     void sound() const override {
         std::cout << "\nStray Cat Sound: HISSS!\n";
     }
+};
+```
 
+### Attribute of Type T & Member Function Using T
+
+```cpp
     // Attribute of Type T & Member Function Using T
     void describeTrait() const {
         std::cout << "Trait info: " << trait << std::endl;
     }
-};
 ```
 
+### Function Template: `displayInfo<T>`
+
+```cpp
+// GameUtils.hpp
+template<typename T>
+void displayInfo(const T& item) {
+    item.treat();
+    item.eat();
+}
+```
+* Used to display food treatment for any object having `treat()` and `eat()` methods.
+
+### Free Function Template: `addGenericCat<T>`
+
+```cpp
+// GameUtils.hpp
+template<typename CatType>
+void addGenericCat(GameState& game, const std::string& name, int age, int fullness) {
+    game.addCat(std::make_shared<CatType>(name, age, fullness));
+}
+```
+
+* Allows flexible addition of any `Cat` subtype to the game using smart pointers.
 ---
 
 ## Design Patterns
