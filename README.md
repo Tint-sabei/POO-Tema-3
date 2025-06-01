@@ -20,8 +20,7 @@ void displayInfo(const T& item) {
     item.eat();
 }
 ```
-
-* Used to display food treatment and animation for any object having `treat()` and `eat()` methods.
+* Used to display food treatment for any object having `treat()` and `eat()` methods.
 
 ### Free Function Template: `addGenericCat<T>`
 
@@ -85,9 +84,7 @@ public:
 ```cpp
 static GameState& getInstance();
 ```
-
-* A private constructor prevents multiple instances.
-* * Ensures a single game manager handles all game state.
+* Ensures a single game manager handles all game state.
 * **Why I used it**: My game logic depends on a shared list of cats and feeding actions. I needed a centralized, consistent controller to manage all interactions and data updates without conflict.
 
 
@@ -103,7 +100,7 @@ class FatCatFeeding : public FeedingStrategy { ... };
 
 * Applied when feeding cats: different behavior for `FatCat` and others.
 * **Why I used it**: Rather than hardcoding feeding behavior with conditions, I designed separate strategy classes that encapsulate each cat’s feeding logic. It makes the system easy to extend with new feeding rules.
-* 
+  
 ### Factory Method Pattern – Food Creation
 
 ```cpp
@@ -136,5 +133,4 @@ Choice: 1
 ## Notes
 
 * Avoid overfeeding: fullness level > 100 triggers `FullnessTooHighException`.
-* The code is modular and demonstrates safe memory management using `shared_ptr`.
 * Templates and design patterns are used meaningfully, not just for compliance.
